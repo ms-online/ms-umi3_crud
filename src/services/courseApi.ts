@@ -34,3 +34,8 @@ export const getDetails = (params: object) => {
 export const edit = (params: object) => {
   return axios.post('/api/course/edit', params).then(checkStatus);
 };
+
+// 删除详情
+export const remove = (params: object) => {
+  return axios.delete(`/api/course/delete`, { params }).then(checkStatus);
+};

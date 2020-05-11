@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button } from 'antd';
-import { getList } from '@/services/courseApi';
+import { Table, Input, Button, message } from 'antd';
+import { getList, remove } from '@/services/courseApi';
 import { history, Link } from 'umi';
 
 const index = () => {
@@ -25,6 +25,18 @@ const index = () => {
   const handleSearch = (keywords: string) => {
     setKeyWords(keywords);
     getDatas({ keywords });
+  };
+
+  // 删除
+  const handleRemove = (id: string) => {
+    remove({ id }).then((res: any) => {
+      if (res && res.success) {
+        message.success(res.msg);
+        getDatas({ keywords });
+        return;
+      }
+      message.warning(res ? res.msg : '删除异常');
+    });
   };
 
   let columns = [
@@ -59,7 +71,7 @@ const index = () => {
       render: (record: { id: string }) => (
         <>
           <Link to={`/course/edit/${record.id}`}>编辑</Link>
-          <a>删除</a>
+          <a onClick={() => handleRemove(record.id)}>删除</a>
         </>
       ),
     },
