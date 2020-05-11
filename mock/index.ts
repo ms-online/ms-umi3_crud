@@ -63,6 +63,34 @@ const getCourseList = (req: { url: string }, res: any) => {
   });
 };
 
+// 添加
+const addCourse = (
+  req: {
+    body: CourseList;
+  },
+  res: any,
+) => {
+  let { type, name, totalPrice, amount, address } = req.body;
+  courseList.unshift({
+    id: Date.now().toString(),
+    type: type,
+    name: name,
+    totalPrice: totalPrice,
+    amount: amount,
+    address: address,
+  });
+  res.send({ msg: '添加成功', success: true });
+};
+
 export default {
   '/api/courseList': getCourseList,
+  '/api/dictionary/type': {
+    datas: [
+      { label: 'React系', value: 'React入门到实战' },
+      { label: 'Vue系', value: 'Vue入门到实战' },
+      { label: 'Node系', value: 'Node入门到实战' },
+      { label: 'uniapp系', value: 'uniapp入门到实战' },
+    ],
+  },
+  'POST /api/course/add': addCourse,
 };

@@ -5,13 +5,27 @@ import { Link, useHistory } from 'umi';
 
 const { Header, Content, Footer, Sider } = Layout;
 
+const getMenuSelectedKeys = (pathname: string): string[] => {
+  if (pathname == '') return [];
+  let paths: string[] = pathname.split('/');
+  let selectedKeys: string[] = [];
+  paths.forEach((_, i) => {
+    selectedKeys.push(paths.slice(0, paths.length - i).join('/'));
+  });
+  return selectedKeys;
+};
+
 const index = (props: { children: React.ReactNode }) => {
   const { location } = useHistory();
   return (
     <Layout className={styles.layout}>
       <Sider breakpoint="lg" collapsedWidth="0">
         <div className="title">米修在线</div>
-        <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={getMenuSelectedKeys(location.pathname)}
+        >
           <Menu.Item key="/course">
             <Link to="/course">课程记录</Link>
           </Menu.Item>

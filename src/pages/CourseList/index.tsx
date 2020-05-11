@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input } from 'antd';
+import { Table, Input, Button } from 'antd';
 import { getList } from '@/services/courseApi';
+import { history } from 'umi';
 
 const index = () => {
   const [datas, setDatas] = useState([]);
@@ -63,8 +64,16 @@ const index = () => {
       ),
     },
   ];
+
+  // 跳转至添加课程页面
+  const handleAdd = () => {
+    history.push('/course/add');
+  };
   return (
     <div>
+      <Button type="primary" onClick={handleAdd}>
+        添加课程
+      </Button>
       <Search
         placeholder="搜索课程"
         style={{ width: 200 }}
