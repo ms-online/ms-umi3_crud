@@ -64,6 +64,13 @@ const index = () => {
       title: '课程地址',
       key: 'address',
       dataIndex: 'address',
+      render: (text: string) => (
+        <>
+          <a target="blank" href={text}>
+            查看课程
+          </a>
+        </>
+      ),
     },
     {
       title: '操作',
