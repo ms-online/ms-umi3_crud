@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { check } from 'prettier';
 
 // 检查请求状态
 function checkStatus(response: { status: number; data: object }): object {
@@ -22,4 +23,14 @@ export const getTypeList = () => {
 // 添加课程
 export const add = (params: object) => {
   return axios.post('/api/course/add', params).then(checkStatus);
+};
+
+// 获取详情
+export const getDetails = (params: object) => {
+  return axios.get(`/api/course/details`, { params }).then(checkStatus);
+};
+
+// 编辑课程
+export const edit = (params: object) => {
+  return axios.post('/api/course/edit', params).then(checkStatus);
 };

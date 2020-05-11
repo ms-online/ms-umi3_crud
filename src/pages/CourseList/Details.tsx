@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Input, Button, message } from 'antd';
-import { getTypeList, add } from '@/services/courseApi';
-import { history } from 'umi';
+import { getTypeList, add, getDetails, edit } from '@/services/courseApi';
+import { history, useParams } from 'umi';
 
 const layout = {
   labelCol: { span: 6 },
@@ -12,13 +12,17 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 8 },
 };
 
+const { Option } = Select;
+
 const Details = () => {
   const [typeList, setTypeList] = useState([]);
-  const { Option } = Select;
+  const { id } = useParams();
+  const [form] = Form.useForm();
 
   // 加载完成执行
   useEffect(() => {
     getTypeDatas();
+    id && init(id);
   }, []);
 
   const getTypeDatas = () => {
@@ -29,21 +33,39 @@ const Details = () => {
     });
   };
 
+  // 初始化课程记录数据
+  const init = (id: string) => {
+    getDetails({ id }).then((res: any) => {
+      if (res && res.success && res.datas) {
+        form.setFieldsValue({ ...res.datas });
+      }
+    });
+  };
+
   // 表单校验成功
   const onFinish = (values: object) => {
-    add(values).then((res: any) => {
-      if (res && res.success) {
-        message.success(res.msg);
-        history.push('/course/list');
-        return;
-      }
-      message.error(res ? res.msg : '添加失败');
-    });
+    id
+      ? edit({ id, ...values }).then((res: any) => {
+          if (res && res.success) {
+            message.success(res.msg);
+            history.push('/course/list');
+            return;
+          }
+          message.error(res ? res.msg : '编辑失败');
+        })
+      : add(values).then((res: any) => {
+          if (res && res.success) {
+            message.success(res.msg);
+            history.push('/course/list');
+            return;
+          }
+          message.error(res ? res.msg : '添加失败');
+        });
   };
 
   return (
     <div>
-      <Form {...layout} name="basic" onFinish={onFinish}>
+      <Form {...layout} name="basic" onFinish={onFinish} form={form}>
         <Form.Item
           label="课程类别"
           name="type"

@@ -21,6 +21,7 @@ export default defineConfig({
             { path: '/course', redirect: '/course/list' },
             { path: '/course/list', component: './CourseList' },
             { path: '/course/add', component: './CourseList/Details' },
+            { path: '/course/edit/:id', component: './CourseList/Details' },
           ],
         },
         { path: '/course', component: './CourseList' },

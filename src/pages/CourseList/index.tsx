@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Input, Button } from 'antd';
 import { getList } from '@/services/courseApi';
-import { history } from 'umi';
+import { history, Link } from 'umi';
 
 const index = () => {
   const [datas, setDatas] = useState([]);
@@ -58,7 +58,7 @@ const index = () => {
       key: 'action',
       render: (record: { id: string }) => (
         <>
-          <a>编辑</a>
+          <Link to={`/course/edit/${record.id}`}>编辑</Link>
           <a>删除</a>
         </>
       ),

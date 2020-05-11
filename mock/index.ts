@@ -1,3 +1,5 @@
+import { ErrorShowType } from 'umi';
+
 type CourseList = {
   id: string;
   type: string;
@@ -82,6 +84,34 @@ const addCourse = (
   res.send({ msg: '添加成功', success: true });
 };
 
+// 详情
+const getDetails = (req: { url: string }, res: any) => {
+  let id = getUrlParam(req.url, 'id');
+  let index = courseList.findIndex((item: any) => item.id == id);
+  if (index == -1) {
+    res.send({ msg: '课程记录不存在', success: false });
+    return;
+  }
+  res.send({ success: true, datas: courseList[index] });
+};
+
+// 编辑
+const editCourse = (
+  req: {
+    body: CourseList;
+  },
+  res: any,
+) => {
+  let { id } = req.body;
+  let index = courseList.findIndex((item: any) => item.id == id);
+  if (index == -1) {
+    res.send({ msg: '课程记录不存在', success: false });
+    return;
+  }
+  courseList[index] = { ...req.body };
+  res.send({ msg: '编辑成功', success: true });
+};
+
 export default {
   '/api/courseList': getCourseList,
   '/api/dictionary/type': {
@@ -93,4 +123,6 @@ export default {
     ],
   },
   'POST /api/course/add': addCourse,
+  '/api/course/details': getDetails,
+  'POST /api/course/edit': editCourse,
 };
